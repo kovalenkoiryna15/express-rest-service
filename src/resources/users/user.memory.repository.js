@@ -15,13 +15,13 @@ const getUserById = async (id) => {
     db.store.users = {};
   }
 
-  if (!db.store.users.id) {
+  if (!db.store.users[id]) {
     const error = new Error(`Couldn't find a user with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  return db.store.users.id;
+  return db.store.users[id];
 };
 
 const createUser = async (name, login, password) => {
@@ -41,7 +41,7 @@ const createUser = async (name, login, password) => {
     password,
   });
 
-  db.store.users.id = user;
+  db.store.users[user.id] = user;
 
   return user;
 };
@@ -51,7 +51,7 @@ const updateUser = async (id, name, login, password) => {
     db.store.users = {};
   }
 
-  if (!db.store.users.id) {
+  if (!db.store.users[id]) {
     const error = new Error(`Couldn't find a user with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
@@ -63,7 +63,7 @@ const updateUser = async (id, name, login, password) => {
     throw error;
   }
 
-  const user = db.store.users.id;
+  const user = db.store.users[id];
 
   const updatedUser = {
     ...user,
@@ -72,7 +72,7 @@ const updateUser = async (id, name, login, password) => {
     password,
   };
 
-  db.store.users.id = updatedUser;
+  db.store.users[id] = updatedUser;
 
   return updatedUser;
 };
@@ -82,13 +82,35 @@ const removeUser = async (id) => {
     db.store.users = {};
   }
 
-  if (!db.store.users.id) {
+  if (!db.store.users[id]) {
     const error = new Error(`Couldn't find a user with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  delete db.store.users.id;
+  if (!db.store.boards) {
+    db.store.boards = {};
+  }
+
+  const boards = Object.values(db.store.boards);
+
+  if (boards.length > 0) {
+    boards.forEach((board) => {
+      if (!db.store.boards[board.id].tasks) {
+        db.store.boards[board.id].tasks = {};
+      }
+      const tasks = Object.values(db.store.boards[board.id].tasks);
+      if (tasks.length > 0) {
+        tasks.forEach((task) => {
+          if (task.userId && task.userId === id) {
+            db.store.boards[board.id].tasks[task.id].userId = null;
+          }
+        });
+      }
+    });
+  }
+
+  delete db.store.users[id];
 };
 
 module.exports = { getAll, getUserById, createUser, updateUser, removeUser };
