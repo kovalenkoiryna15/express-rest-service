@@ -2,26 +2,26 @@ const { NOT_FOUND, BAD_REQUEST } = require('http-status-codes');
 const db = require('../../db/db');
 const Task = require('./task.model');
 
-const getAll = async () => {
-  if (!db.store.tasks) {
-    db.store.tasks = {};
+const getAll = async (boardId) => {
+  if (!db.store.boards[boardId].tasks) {
+    db.store.boards[boardId].tasks = {};
   }
 
-  return Object.values(db.store.tasks);
+  return Object.values(db.store.boards[boardId].tasks);
 };
 
-const getTaskById = async (id) => {
-  if (!db.store.tasks) {
-    db.store.tasks = {};
+const getTaskById = async (boardId, id) => {
+  if (!db.store.boards[boardId].tasks) {
+    db.store.boards[boardId].tasks = {};
   }
 
-  if (!db.store.boards.id) {
+  if (!db.store.boards[boardId].tasks[id]) {
     const error = new Error(`Couldn't find a task with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  return db.store.tasks.id;
+  return db.store.boards[id].tasks[id];
 };
 
 const createTask = async (
@@ -32,8 +32,8 @@ const createTask = async (
   boardId,
   columnId
 ) => {
-  if (!db.store.tasks) {
-    db.store.tasks = {};
+  if (!db.store.boards[boardId].tasks) {
+    db.store.boards[boardId].tasks = {};
   }
 
   if (!title || !boardId || !columnId) {
@@ -51,7 +51,7 @@ const createTask = async (
     columnId,
   });
 
-  db.store.tasks.id = task;
+  db.store.boards[boardId].tasks[task.id] = task;
 
   return task;
 };
@@ -65,11 +65,11 @@ const updateTask = async (
   boardId,
   columnId
 ) => {
-  if (!db.store.tasks) {
-    db.store.tasks = {};
+  if (!db.store.boards[boardId].tasks) {
+    db.store.boards[boardId].tasks = {};
   }
 
-  if (!db.store.tasks.id) {
+  if (!db.store.boards[boardId].tasks[id]) {
     const error = new Error(`Couldn't find a task with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
@@ -81,7 +81,7 @@ const updateTask = async (
     throw error;
   }
 
-  const task = db.store.tasks.id;
+  const task = db.store.boards[boardId].tasks[id];
 
   const updatedTask = {
     ...task,
@@ -93,23 +93,23 @@ const updateTask = async (
     columnId,
   };
 
-  db.store.tasks.id = updatedTask;
+  db.store.boards[boardId].tasks[id] = updatedTask;
 
   return updatedTask;
 };
 
-const removeTask = async (id) => {
-  if (!db.store.tasks) {
-    db.store.tasks = {};
+const removeTask = async (boardId, id) => {
+  if (!db.store.boards[boardId].tasks) {
+    db.store.boards[boardId].tasks = {};
   }
 
-  if (!db.store.tasks.id) {
+  if (!db.store.boards[boardId].tasks[id]) {
     const error = new Error(`Couldn't find a task with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  delete db.store.tasks.id;
+  delete db.store.boards[boardId].tasks[id];
 };
 
 module.exports = {
