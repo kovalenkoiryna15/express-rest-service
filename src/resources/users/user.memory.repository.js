@@ -1,8 +1,6 @@
 const { NOT_FOUND, BAD_REQUEST } = require('http-status-codes');
-const DB = require('../../db/db');
+const db = require('../../db/db');
 const User = require('./user.model');
-
-const db = new DB();
 
 const getAll = async () => {
   if (!db.store.users) {

@@ -2,4 +2,6 @@ function DB() {
   this.store = {};
 }
 
-module.exports = DB;
+const db = new DB();
+
+module.exports = db;
