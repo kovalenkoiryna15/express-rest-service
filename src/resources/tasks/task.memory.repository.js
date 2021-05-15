@@ -3,6 +3,12 @@ const db = require('../../db/db');
 const Task = require('./task.model');
 
 const getAll = async (boardId) => {
+  if (!db.store.boards[boardId]) {
+    const error = new Error(`Couldn't find a board with id ${boardId}`);
+    error.status = NOT_FOUND; // 404
+    throw error;
+  }
+
   if (!db.store.boards[boardId].tasks) {
     db.store.boards[boardId].tasks = {};
   }
@@ -10,33 +16,45 @@ const getAll = async (boardId) => {
   return Object.values(db.store.boards[boardId].tasks);
 };
 
-const getTaskById = async (boardId, id) => {
-  if (!db.store.boards[boardId].tasks) {
-    db.store.boards[boardId].tasks = {};
-  }
-
-  if (!db.store.boards[boardId].tasks[id]) {
-    const error = new Error(`Couldn't find a task with id ${id}`);
+const getTaskById = async (boardId, taskId) => {
+  if (!db.store.boards[boardId]) {
+    const error = new Error(`Couldn't find a board with id ${boardId}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  return db.store.boards[id].tasks[id];
+  if (!db.store.boards[boardId].tasks) {
+    db.store.boards[boardId].tasks = {};
+  }
+
+  if (!db.store.boards[boardId].tasks[taskId]) {
+    const error = new Error(`Couldn't find a task with id ${taskId}`);
+    error.status = NOT_FOUND; // 404
+    throw error;
+  }
+
+  return db.store.boards[boardId].tasks[taskId];
 };
 
-const createTask = async (
+const createTask = async ({
   title,
   order,
   description,
   userId,
   boardId,
-  columnId
-) => {
+  columnId,
+}) => {
+  if (!db.store.boards[boardId]) {
+    const error = new Error(`Couldn't find a board with id ${boardId}`);
+    error.status = NOT_FOUND; // 404
+    throw error;
+  }
+
   if (!db.store.boards[boardId].tasks) {
     db.store.boards[boardId].tasks = {};
   }
 
-  if (!title || !boardId || !columnId) {
+  if (!title || !boardId) {
     const error = new Error(`Title, board id and column id are required.`);
     error.status = BAD_REQUEST; // 400
     throw error;
@@ -56,32 +74,38 @@ const createTask = async (
   return task;
 };
 
-const updateTask = async (
-  id,
+const updateTask = async ({
+  taskId,
   title,
   order,
   description,
   userId,
   boardId,
-  columnId
-) => {
-  if (!db.store.boards[boardId].tasks) {
-    db.store.boards[boardId].tasks = {};
-  }
-
-  if (!db.store.boards[boardId].tasks[id]) {
-    const error = new Error(`Couldn't find a task with id ${id}`);
+  columnId,
+}) => {
+  if (!db.store.boards[boardId]) {
+    const error = new Error(`Couldn't find a board with id ${boardId}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  if (!title || !boardId || !columnId) {
+  if (!db.store.boards[boardId].tasks) {
+    db.store.boards[boardId].tasks = {};
+  }
+
+  if (!db.store.boards[boardId].tasks[taskId]) {
+    const error = new Error(`Couldn't find a task with id ${taskId}`);
+    error.status = NOT_FOUND; // 404
+    throw error;
+  }
+
+  if (!title || !boardId) {
     const error = new Error(`Title, board id and column id are required.`);
     error.status = BAD_REQUEST; // 400
     throw error;
   }
 
-  const task = db.store.boards[boardId].tasks[id];
+  const task = db.store.boards[boardId].tasks[taskId];
 
   const updatedTask = {
     ...task,
@@ -93,23 +117,29 @@ const updateTask = async (
     columnId,
   };
 
-  db.store.boards[boardId].tasks[id] = updatedTask;
+  db.store.boards[boardId].tasks[taskId] = updatedTask;
 
   return updatedTask;
 };
 
-const removeTask = async (boardId, id) => {
-  if (!db.store.boards[boardId].tasks) {
-    db.store.boards[boardId].tasks = {};
-  }
-
-  if (!db.store.boards[boardId].tasks[id]) {
-    const error = new Error(`Couldn't find a task with id ${id}`);
+const removeTask = async (boardId, taskId) => {
+  if (!db.store.boards[boardId]) {
+    const error = new Error(`Couldn't find a board with id ${boardId}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  delete db.store.boards[boardId].tasks[id];
+  if (!db.store.boards[boardId].tasks) {
+    db.store.boards[boardId].tasks = {};
+  }
+
+  if (!db.store.boards[boardId].tasks[taskId]) {
+    const error = new Error(`Couldn't find a task with id ${taskId}`);
+    error.status = NOT_FOUND; // 404
+    throw error;
+  }
+
+  delete db.store.boards[boardId].tasks[taskId];
 };
 
 module.exports = {

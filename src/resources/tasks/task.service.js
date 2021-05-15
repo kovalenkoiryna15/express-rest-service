@@ -4,10 +4,9 @@ const getAll = (boardId) => taskRepo.getAll(boardId);
 
 const get = (boardId, taskId) => taskRepo.getTaskById(boardId, taskId);
 
-const create = (title, columns) => taskRepo.createTask(title, columns);
+const create = (task) => taskRepo.createTask(task);
 
-const update = (boardId, taskId, title, columns) =>
-  taskRepo.updateTask(boardId, taskId, title, columns);
+const update = (task) => taskRepo.updateTask(task);
 
 const remove = (boardId, taskId) => taskRepo.removeTask(boardId, taskId);
 
