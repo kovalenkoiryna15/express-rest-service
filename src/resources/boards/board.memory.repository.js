@@ -15,13 +15,13 @@ const getBoardById = async (id) => {
     db.store.boards = {};
   }
 
-  if (!db.store.boards.id) {
+  if (!db.store.boards[id]) {
     const error = new Error(`Couldn't find a board with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  return db.store.boards.id;
+  return db.store.boards[id];
 };
 
 const createBoard = async (title, columns) => {
@@ -40,7 +40,7 @@ const createBoard = async (title, columns) => {
     columns,
   });
 
-  db.store.boards.id = board;
+  db.store.boards[board.id] = board;
 
   return board;
 };
@@ -50,7 +50,7 @@ const updateBoard = async (id, title, columns) => {
     db.store.boards = {};
   }
 
-  if (!db.store.boards.id) {
+  if (!db.store.boards[id]) {
     const error = new Error(`Couldn't find a board with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
@@ -62,7 +62,7 @@ const updateBoard = async (id, title, columns) => {
     throw error;
   }
 
-  const board = db.store.boards.id;
+  const board = db.store.boards[id];
 
   const updatedBoard = {
     ...board,
@@ -70,7 +70,7 @@ const updateBoard = async (id, title, columns) => {
     columns,
   };
 
-  db.store.boards.id = updatedBoard;
+  db.store.boards[id] = updatedBoard;
 
   return updatedBoard;
 };
@@ -80,13 +80,13 @@ const removeBoard = async (id) => {
     db.store.boards = {};
   }
 
-  if (!db.store.boards.id) {
+  if (!db.store.boards[id]) {
     const error = new Error(`Couldn't find a board with id ${id}`);
     error.status = NOT_FOUND; // 404
     throw error;
   }
 
-  delete db.store.boards.id;
+  delete db.store.boards[id];
 };
 
 module.exports = {
