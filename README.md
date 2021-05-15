@@ -5,22 +5,12 @@
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
-## Downloading
+## Run application
 
-```
-git clone {repository URL}
-```
-
-## Installing NPM modules
-
-```
-npm install
-```
-
-## Running application
-
-```
-npm start
+```bash
+$ git clone https://github.com/kovalenkoiryna15/express-rest-service.git
+$ git checkout express-rest-service
+$ npm i
 ```
 
 After starting the app on port (4000 as default) you can open
