@@ -11,6 +11,7 @@
 $ git clone https://github.com/kovalenkoiryna15/express-rest-service.git
 $ git checkout express-rest-service
 $ npm i
+$ npm start
 ```
 
 After starting the app on port (4000 as default) you can open
