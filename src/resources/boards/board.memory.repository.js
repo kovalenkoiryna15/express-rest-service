@@ -24,7 +24,7 @@ const getBoardById = async (id) => {
   return db.store.boards.id;
 };
 
-const createBoard = async (title, columns = []) => {
+const createBoard = async (title, columns) => {
   if (!db.store.boards) {
     db.store.boards = {};
   }
