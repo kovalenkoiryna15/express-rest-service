@@ -1,5 +1,4 @@
 const { NOT_FOUND, BAD_REQUEST } = require('http-status-codes');
-const { v4: uuidv4 } = require('uuid');
 const DB = require('../../db/db');
 const User = require('./user.model');
 
@@ -38,10 +37,7 @@ const createUser = async (name, login, password) => {
     throw error;
   }
 
-  const id = uuidv4();
-
   const user = new User({
-    id,
     name,
     login,
     password,
