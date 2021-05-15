@@ -2,6 +2,7 @@ const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
 const YAML = require('yamljs');
+const { INTERNAL_SERVER_ERROR, getStatusText } = require('http-status-codes');
 const userRouter = require('./resources/users/user.router');
 
 const app = express();
@@ -20,5 +21,16 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/users', userRouter);
+
+app.use((err, req, res, next) => {
+  if (err.status) {
+    res.status(err.status).send(err.message);
+  } else {
+    res
+      .status(INTERNAL_SERVER_ERROR) // 500
+      .send(getStatusText(INTERNAL_SERVER_ERROR)); // Server Error
+  }
+  next();
+});
 
 module.exports = app;
