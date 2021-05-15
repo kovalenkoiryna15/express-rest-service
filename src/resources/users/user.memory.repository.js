@@ -33,7 +33,7 @@ const createUser = async (name, login, password) => {
 
   if (!name || !login || !password) {
     const error = new Error(`Name, login and password are required.`);
-    error.status = BAD_REQUEST; // 401
+    error.status = BAD_REQUEST; // 400
     throw error;
   }
 
@@ -61,7 +61,7 @@ const updateUser = async (id, name, login, password) => {
 
   if (!name || !login || !password) {
     const error = new Error(`Name, login and password are required.`);
-    error.status = BAD_REQUEST; // 401
+    error.status = BAD_REQUEST; // 400
     throw error;
   }
 
