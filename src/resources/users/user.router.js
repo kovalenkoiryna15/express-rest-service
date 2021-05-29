@@ -15,7 +15,6 @@ router.get('/:id', async (req, res) => {
     if (err.status) {
       res.status(err.status).send(err.message);
     } else {
-      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
@@ -30,7 +29,6 @@ router.post('/', async (req, res) => {
     if (err.status) {
       res.status(err.status).send(err.message);
     } else {
-      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
@@ -46,7 +44,6 @@ router.put('/:id', async (req, res) => {
     if (err.status) {
       res.status(err.status).send(err.message);
     } else {
-      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
@@ -61,7 +58,6 @@ router.delete('/:id', async (req, res) => {
     if (err.status) {
       res.status(err.status).send(err.message);
     } else {
-      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }

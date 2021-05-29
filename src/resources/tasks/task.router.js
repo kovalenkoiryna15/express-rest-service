@@ -14,7 +14,6 @@ router.get('/:taskId', async (req, res) => {
     if (err.status) {
       res.status(err.status).send(err.message);
     } else {
-      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
@@ -29,7 +28,6 @@ router.post('/', async (req, res) => {
     if (err.status) {
       res.status(err.status).send(err.message);
     } else {
-      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
@@ -44,7 +42,6 @@ router.put('/:taskId', async (req, res) => {
     if (err.status) {
       res.status(err.status).send(err.message);
     } else {
-      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
@@ -59,7 +56,6 @@ router.delete('/:taskId', async (req, res) => {
     if (err.status) {
       res.status(err.status).send(err.message);
     } else {
-      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }

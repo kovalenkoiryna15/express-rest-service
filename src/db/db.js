@@ -1,3 +1,7 @@
+/**
+ * Represents a database.
+ * @constructor
+ */
 function DB() {
   this.store = {};
 }
