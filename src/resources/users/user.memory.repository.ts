@@ -4,7 +4,7 @@ import User from './user.model';
 import { IUser, UserID } from './user.types';
 import { IBoard } from '../boards/board.types';
 import { ITask } from '../tasks/task.types';
-import { ErrorWithStatus } from '../../types';
+import ErrorWithStatus from '../../types';
 
 /**
  * Gets all users.

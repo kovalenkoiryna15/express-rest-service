@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { BoardID, IColumn } from '../boards/board.types';
+import { BoardID, IColumn } from './board.types';
 import { ITask } from '../tasks/task.types';
 
 /** Class representing a Board. */
@@ -19,7 +19,7 @@ class Board {
    * @param {string} title - The Board title.
    * @param {Column[]} columns - The Board column list.
    */
-  constructor(title: string = 'TITLE', columns: IColumn[] = [], id: string = v4(), tasks: Map<string, ITask> = new Map()) {
+  constructor(title = 'TITLE', columns: IColumn[] = [], id: string = v4(), tasks: Map<string, ITask> = new Map()) {
     this.id = id;
     this.title = title;
     this.columns = columns;

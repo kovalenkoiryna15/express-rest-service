@@ -1,5 +1,3 @@
-import { ITask } from '../tasks/task.types';
-
 export type BoardID = string;
 
 /**

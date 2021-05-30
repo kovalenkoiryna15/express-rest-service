@@ -1,5 +1,3 @@
-import { BoardID } from '../boards/board.types';
-
 export type TaskID = string;
 
 /**
@@ -19,6 +17,6 @@ export interface ITask {
   order?: string;
   description?: string;
   userId?: string;
-  boardId: BoardID;
+  boardId: string;
   columnId?: string;
 }

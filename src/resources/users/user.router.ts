@@ -10,12 +10,17 @@ router.get('/', async (_, res: express.Response) => {
 });
 
 router.get('/:id', async (req: express.Request, res: express.Response) => {
-  if (req && req.params?.id) {
+  const ID = 'id';
+  if (req && req.params?.[ID]) {
     try {
-      const { id } = req.params;
-      const user = await usersService.get(id);
-      if (user) {
-        res.status(200).send(User.toResponse(user));
+      const id = req.params[ID];
+      if (id) {
+        const user = await usersService.get(id);
+        if (user) {
+          res.status(200).send(User.toResponse(user));
+        } else {
+          res.status(500).send('Server Error');
+        }
       } else {
         res.status(500).send('Server Error');
       }
@@ -46,14 +51,19 @@ router.post('/', async (req: express.Request, res: express.Response) => {
 });
 
 router.put('/:id', async (req: express.Request, res: express.Response) => {
-  if (req && req.params?.id) {
+  const ID = 'id';
+  if (req && req.params?.[ID]) {
     try {
-      const { id } = req.params;
+      const id = req.params[ID];
       const { name, login, password } = req.body;
-      const user = await usersService.update({
-        id, name, login, password,
-      });
-      res.status(200).send(User.toResponse(user));
+      if (id) {
+        const user = await usersService.update({
+          id, name, login, password,
+        });
+        res.status(200).send(User.toResponse(user));
+      } else {
+        res.status(500).send('Server Error');
+      }
     } catch (err) {
       if (err.status) {
         res.status(err.status).send(err.message);
@@ -67,11 +77,16 @@ router.put('/:id', async (req: express.Request, res: express.Response) => {
 });
 
 router.delete('/:id', async (req: express.Request, res: express.Response) => {
-  if (req && req.params?.id) {
+  const ID = 'id';
+  if (req && req.params?.[ID]) {
     try {
-      const { id } = req.params;
-      await usersService.remove(id);
-      res.status(204).send();
+      const id = req.params[ID];
+      if (id) {
+        await usersService.remove(id);
+        res.status(204).send();
+      } else {
+        res.status(500).send('Server Error');
+      }
     } catch (err) {
       if (err.status) {
         res.status(err.status).send(err.message);

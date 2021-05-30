@@ -4,8 +4,8 @@ import taskService from './task.service';
 const router = express.Router({ mergeParams: true });
 
 router.get('/:id/tasks', async (req, res) => {
-  if (req && req.params?..id) {
-    const boardId = req.params.id;
+  if (req && req.params?.id) {
+    const { id: boardId } = req.params;
     const tasks = await taskService.getAll(boardId);
     res.status(200).send(tasks);
   } else {
@@ -14,10 +14,9 @@ router.get('/:id/tasks', async (req, res) => {
 });
 
 router.get('/:id/tasks/:taskId', async (req, res) => {
-  if (req && req.params?..taskId && req.params?..id) {
-    try {    
-      const taskId = req.params.taskId;
-      const boardId = req.params.id;
+  if (req && req.params?.taskId && req.params?.id) {
+    try {
+      const { taskId, id: boardId } = req.params;
       const task = await taskService.get(boardId, taskId);
       res.status(200).send(task);
     } catch (err) {
@@ -33,9 +32,9 @@ router.get('/:id/tasks/:taskId', async (req, res) => {
 });
 
 router.post('/:id/tasks/', async (req, res) => {
-  if (req && req.params?..id && req.body?.title) {
+  if (req && req.params?.id && req.body?.title) {
     try {
-      const boardId = req.params.id;
+      const { id: boardId } = req.params;
       const {
         title,
         order,
@@ -65,10 +64,9 @@ router.post('/:id/tasks/', async (req, res) => {
 });
 
 router.put('/:id/tasks/:taskId', async (req, res) => {
-  if (req && req.params?..taskId && req.params?..id) {
-    try {    
-      const taskId = req.params.taskId;
-      const boardId = req.params.id;
+  if (req && req.params?.taskId && req.params?.id) {
+    try {
+      const { taskId, id: boardId } = req.params;
       const task = await taskService.update({ ...req.body, boardId, id: taskId });
       res.status(200).send(task);
     } catch (err) {
@@ -84,10 +82,9 @@ router.put('/:id/tasks/:taskId', async (req, res) => {
 });
 
 router.delete('/:id/tasks/:taskId', async (req, res) => {
-  if (req && req.params?..taskId && req.params?..id) {
+  if (req && req.params?.taskId && req.params?.id) {
     try {  
-      const id = req.params.taskId;
-      const boardId = req.params.id;
+      const { taskId: id, id: boardId } = req.params;
       await taskService.remove(boardId, id);
       res.status(200).send();
     } catch (err) {

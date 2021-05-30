@@ -6,7 +6,7 @@ import { INTERNAL_SERVER_ERROR, getStatusText } from 'http-status-codes';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
-import { ErrorWithStatus } from './types';
+import ErrorWithStatus from './types/index';
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -26,7 +26,12 @@ app.use('/', (req: express.Request, res: express.Response, next: express.NextFun
 app.use('/users', userRouter);
 app.use('/boards', boardRouter, taskRouter);
 
-app.use((err: ErrorWithStatus, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((
+  err: ErrorWithStatus,
+  _req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
   if (err.status) {
     res.status(err.status).send(err.message);
   } else {

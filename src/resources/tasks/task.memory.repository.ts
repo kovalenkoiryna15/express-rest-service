@@ -3,7 +3,7 @@ import db from '../../db/db';
 import Task from './task.model';
 import { ITask, TaskID } from './task.types';
 import { BoardID, IBoard } from '../boards/board.types';
-import { ErrorWithStatus } from '../../types';
+import ErrorWithStatus from '../../types';
 
 /**
  * Gets all tasks by the Board ID.

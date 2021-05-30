@@ -9,9 +9,10 @@ router.get('/', async (_req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  if (req && req.params?..id) {
+  const ID = 'id';
+  if (req && req.params?.[ID]) {
     try {    
-      const id = req.params.id;
+      const { id } = req.params;
       const board = await boardService.get(id);
       res.status(200).send(board);
     } catch (err) {
@@ -45,9 +46,10 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  if (req && req.params?..id && req.body) {
+  const ID = 'id';
+  if (req && req.params?.[ID] && req.body) {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
       const { title, columns } = req.body;
       const board = await boardService.update(id, title, columns);
       res.status(200).send(board);
@@ -64,9 +66,10 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  if (req && req.params?..id) {
+  const ID = 'id';
+  if (req && req.params?.[ID]) {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
       await boardService.remove(id);
       res.status(204).send();
     } catch (err) {

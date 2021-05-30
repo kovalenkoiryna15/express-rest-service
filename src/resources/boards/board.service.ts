@@ -1,5 +1,5 @@
 import boardRepo from './board.memory.repository';
-import { BoardID, IColumn } from '../boards/board.types';
+import { BoardID, IColumn } from './board.types';
 
 /**
  * Gets all boards.
@@ -33,7 +33,11 @@ const create = (title: string, columns: []) => boardRepo.createBoard(title, colu
  * @argument {string} columns - The columns of the Board.
  * @returns {Board} the updated Board object.
  */
-const update = (id: BoardID, title: string, columns: IColumn[]) => boardRepo.updateBoard(id, title, columns);
+const update = (
+  id: BoardID,
+  title: string,
+  columns: IColumn[],
+) => boardRepo.updateBoard(id, title, columns);
 
 /**
  * Deletes Board by ID.

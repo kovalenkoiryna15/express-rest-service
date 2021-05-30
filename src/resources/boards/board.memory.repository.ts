@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import db from '../../db/db';
 import Board from './board.model';
 import { BoardID, IColumn, IBoard } from './board.types';
-import { ErrorWithStatus } from '../../types';
+import ErrorWithStatus from '../../types';
 
 /**
  * Gets all boards.
