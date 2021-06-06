@@ -7,6 +7,7 @@ import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
 import ErrorWithStatus from './types/index';
+import logger from './logger/logger';
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -14,6 +15,8 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 app.use(express.json());
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+app.use(logger());
 
 app.use('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (req.originalUrl === '/') {
