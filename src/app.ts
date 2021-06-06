@@ -16,33 +16,40 @@ app.use(express.json());
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-app.use(logger());
-
-app.use('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if (req.originalUrl === '/') {
-    res.send('Service is running!');
-    return;
-  }
-  next();
-});
+app.use(logger('incoming request error'));
 
 app.use('/users', userRouter);
 app.use('/boards', boardRouter, taskRouter);
 
-app.use((
-  err: ErrorWithStatus,
-  _req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-) => {
+app.use('/', (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (req.originalUrl === '/') {
+    res.send('Service is running!');
+    return;
+  }
+  next(err);
+});
+
+app.use((err: ErrorWithStatus, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (err.status) {
+    logger('unhandled error', `Caught error: ${err.message}`, `${err.status}`)();
     res.status(err.status).send(err.message);
   } else {
+    logger('unhandled error', `Caught error: ${getStatusText(INTERNAL_SERVER_ERROR)}`, `${INTERNAL_SERVER_ERROR}`)();
     res
-      .status(INTERNAL_SERVER_ERROR) // 500
-      .send(getStatusText(INTERNAL_SERVER_ERROR)); // Server Error
+      .status(INTERNAL_SERVER_ERROR)
+      .send(getStatusText(INTERNAL_SERVER_ERROR));
   }
   next();
+});
+
+process.on('unhandledRejection', (reason: Error, promise) => {
+  logger('unhandledRejection', `Unhandled Rejection at: ${promise}, reason: ${reason}`)();
+  process.exit(1);
+});
+
+process.on('uncaughtException', (error: Error, origin: string) => {
+  logger('uncaughtException', `Caught exception: ${error.message}\n Exception origin: ${origin}`)();
+  process.exit(1);
 });
 
 export default app;
