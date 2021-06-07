@@ -1,5 +1,5 @@
 import morgan from 'morgan';
-import { createWriteStream } from 'fs';
+import fs, { createWriteStream } from 'fs';
 import express from 'express';
 
 morgan.token('body', (req: express.Request)=> JSON.stringify(req.body) );
@@ -16,18 +16,15 @@ export default function logger(type: string, message?: string, status?: string):
       }
     case 'unhandledRejection':
       return (): void => {
-        const stream = createWriteStream('unhandledRejection.log', { encoding: 'utf-8', flags: 'a' });
-        stream.write(`${JSON.stringify({ message })} \n`);
+        fs.writeFileSync('unhandledRejection.log', `${JSON.stringify({ message })} \n`, { encoding: 'utf-8', flag: 'a' });
       }
     case 'uncaughtException':
       return (): void => {
-        const stream = createWriteStream('uncaughtException.log', { encoding: 'utf-8', flags: 'a' });
-        stream.write(`${JSON.stringify({ message })} \n`);
+        fs.writeFileSync('uncaughtException.log', `${JSON.stringify({ message })} \n`, { encoding: 'utf-8', flag: 'a' });
       }
     default: 
       return (): void => {
-        const stream = createWriteStream('unspecifiedError.log', { encoding: 'utf-8', flags: 'a' });
-        stream.write(`${JSON.stringify({ message })} \n`);
+        fs.writeFileSync('unspecifiedError.log', `${JSON.stringify({ message })} \n`, { encoding: 'utf-8', flag: 'a' });
       }
   }
 }

@@ -47,8 +47,8 @@ process.on('unhandledRejection', (reason: Error, promise) => {
   process.exit(1);
 });
 
-process.on('uncaughtException', (error: Error, origin: string) => {
-  logger('uncaughtException', `Caught exception: ${error.message}\n Exception origin: ${origin}`)();
+process.on('uncaughtException', async (error: Error, origin: string) => {
+  logger('uncaughtException', `Caught exception: ${error.message}; Exception origin: ${origin}`)();
   process.exit(1);
 });
 
