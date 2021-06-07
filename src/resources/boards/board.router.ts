@@ -8,7 +8,7 @@ router.get('/', async (_req, res) => {
   res.status(200).send(boards);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next: express.NextFunction) => {
   const ID = 'id';
   if (req && req.params?.[ID]) {
     try {    
@@ -16,36 +16,28 @@ router.get('/:id', async (req, res) => {
       const board = await boardService.get(id);
       res.status(200).send(board);
     } catch (err) {
-      if (err.status) {
-        res.status(err.status).send(err.message);
-      } else {
-        res.status(500).send('Server Error');
-      }
+      next(err);
     }
   } else {
-    res.status(500).send('Server Error');
+    next(new Error());
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next: express.NextFunction) => {
   if (req && req.body) {
     try {    
       const { title, columns } = req.body;
       const board = await boardService.create(title, columns);
       res.status(201).send(board);
     } catch (err) {
-      if (err.status) {
-        res.status(err.status).send(err.message);
-      } else {
-        res.status(500).send('Server Error');
-      }
+      next(err);
     }
   } else {
-    res.status(500).send('Server Error');
+    next(new Error());
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next: express.NextFunction) => {
   const ID = 'id';
   if (req && req.params?.[ID] && req.body) {
     try {
@@ -54,18 +46,14 @@ router.put('/:id', async (req, res) => {
       const board = await boardService.update(id, title, columns);
       res.status(200).send(board);
     } catch (err) {
-      if (err.status) {
-        res.status(err.status).send(err.message);
-      } else {
-        res.status(500).send('Server Error');
-      }
+      next(err);
     }
   } else {
-    res.status(500).send('Server Error');
+    next(new Error());
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next: express.NextFunction) => {
   const ID = 'id';
   if (req && req.params?.[ID]) {
     try {
@@ -73,14 +61,10 @@ router.delete('/:id', async (req, res) => {
       await boardService.remove(id);
       res.status(204).send();
     } catch (err) {
-      if (err.status) {
-        res.status(err.status).send(err.message);
-      } else {
-        res.status(500).send('Server Error');
-      }
+      next(err);
     }
   } else {
-    res.status(500).send('Server Error');
+    next(new Error());
   }
 });
 

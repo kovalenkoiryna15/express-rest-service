@@ -45,6 +45,7 @@
     ],
     "import/no-named-as-default": 0,
     "dot-notation": [2, {"allowPattern": "^[a-z]+(_[a-z]+)+$", "allowKeywords": true }],
-    "@typescript-eslint/dot-notation": ["error" ]
+    "@typescript-eslint/dot-notation": ["error" ],
+    "no-process-exit": "off"
   }
 }
